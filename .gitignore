@@ -80,7 +80,7 @@ fabric.properties
 
 # *.iml
 # modules.xml
-# .idea/misc.xml
+.idea/misc.xml
 # *.ipr
 
 # Sonarlint plugin
@@ -246,3 +246,7 @@ dmypy.json
 .prof
 
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm
+
+#anventofcode
+input_*.txt
+Day*/config.json
