@@ -82,8 +82,8 @@ class Day(ABC):
             res.append(f"|{'=' * max_len}|")
             all_max = max(all_max, max_len + 2)
 
-        for i, middle_part in enumerate([self.__class__.__name__,
-                                         f"{self.__class__.__name__}: {str(datetime.timedelta(seconds=sum(durations.values())))}"
+        for i, middle_part in enumerate([self.get_name(),
+                                         f"{self.get_name()}: {str(datetime.timedelta(seconds=sum(durations.values())))}"
                                          ]):
             first_part = "~" * int((all_max - len(middle_part)) / 2)
             back_part = "~" * int(all_max - len(first_part) - len(middle_part))
@@ -97,7 +97,7 @@ class Day(ABC):
 
     @classmethod
     def iterate_days(cls) -> Generator["Day", "Day", None]:
-        for day in sorted(cls.__loaded_days, key=lambda x: x.__class__.__name__):
+        for day in sorted(cls.__loaded_days, key=lambda x: x.get_name()):
             yield day
 
     def get_input_content_raw(self, task: StarTask) -> Optional[bytes]:
@@ -106,6 +106,9 @@ class Day(ABC):
             return None
         with open(file_name, "rb") as fin:
             return fin.read()
+
+    def get_name(self) -> str:
+        return self.__class__.__name__
 
 
 def __import_days():
