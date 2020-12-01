@@ -2,7 +2,7 @@ from version import get_version as version
 
 if __name__ == "__main__":
 
-    import Day
+    from AoC import Day
     import argparse
     import datetime
     from typing import Tuple, Optional

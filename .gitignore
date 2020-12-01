@@ -249,4 +249,4 @@ dmypy.json
 
 #anventofcode
 input_*.txt
-Day*/config.json
+/*/Day*/config.json

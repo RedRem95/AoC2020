@@ -6,7 +6,7 @@ except ImportError:
     print("It seams like numpy is not installed. You absolutely need numpy to run this")
     exit(1)
 
-from Day import Day, StarTask
+from AoC.Day import Day, StarTask
 
 
 class Day01(Day):
@@ -42,6 +42,6 @@ class Day01(Day):
             result = np.multiply.reduce(data[pos])
             return f"Search for {num_inputs} points that give {target} in summary\n" \
                    f"Use points at line {', '.join(f'{x + 1}->{data[x]}' for x in pos)}\n" \
-                   f"{' * '.join(str(x) for x in data[pos])} = {target}", result
+                   f"{' * '.join(str(x) for x in data[pos])} = {result}", result
         except IndexError:
             return f"ERROR: {target} propably was not findable", None

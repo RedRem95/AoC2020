@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from Day import Day, StarTask
+from AoC.Day import Day, StarTask
 
 
 class Day02(Day):
