@@ -1,0 +1,6 @@
+name: AoC
+channels:
+  - conda-forge
+dependencies:
+  - numpy
+  - requests
