@@ -5,13 +5,13 @@ import time
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Optional, Dict, List, Generator, Any, Tuple
+from AoC import THIS_YEAR
 
 
 def _download_input(day: int, year: int = datetime.datetime.now().year) -> Optional[str]:
     return None
 
 
-THIS_YEAR = int(os.environ.get("AOC_YEAR", datetime.datetime.now().year))
 __aoc_session_env = "AOC_SESSION_ID"
 try:
     import requests
@@ -152,20 +152,3 @@ class Day(ABC):
             return int(self.get_name()[3:])
         except (ValueError, KeyError):
             return None
-
-
-def __import_days():
-    import re
-    import importlib
-    pattern = re.compile(r"Day[0-2][0-9]")
-    parent_parent = os.path.dirname(os.path.dirname(__file__))
-    for folder in (x for x in os.listdir(parent_parent) if pattern.match(x)):
-        folder_abs = os.path.join(parent_parent, folder)
-        if os.path.exists(folder_abs) and os.path.isdir(folder_abs) and os.path.exists(
-                os.path.join(folder_abs, "__init__.py")):
-            tmp = importlib.import_module(folder.replace(os.path.sep, "."))
-            tmp = getattr(tmp, folder)
-            _ = tmp()
-
-
-__import_days()
