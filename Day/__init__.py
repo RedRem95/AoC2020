@@ -7,6 +7,33 @@ from enum import Enum
 from typing import Optional, Dict, List, Generator, Any, Tuple
 
 
+def _download_input(day: int, year: int = datetime.datetime.now().year) -> Optional[str]:
+    return None
+
+
+THIS_YEAR = int(os.environ.get("AOC_YEAR", datetime.datetime.now().year))
+__aoc_session_env = "AOC_SESSION_ID"
+try:
+    import requests
+    SESSION_ID = os.environ.get(__aoc_session_env)
+    if SESSION_ID is None:
+        del SESSION_ID
+        raise KeyError()
+
+    def _download_input(day: int, year: int = None) -> Optional[str]:
+        if year is None:
+            year = THIS_YEAR
+        cookies = {'session': SESSION_ID}
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        print(f"Download for AOC{year}-{day}")
+        response = requests.get(f'https://adventofcode.com/{year}/day/{day}/input', cookies=cookies, headers=headers)
+        return response.text
+except ImportError as e:
+    print("Requests not installed. You wont be able to automatically download your inputs")
+except KeyError as e:
+    print(f"Requests installed. But you need to set the \"{__aoc_session_env}\" environment variable")
+
+
 class StarTask(Enum):
     Task01 = 1
     Task02 = 2
@@ -23,13 +50,12 @@ class Day(ABC):
                 self.__day_input[task] = self.convert_input(raw_input=data, task=task)
         self.__class__.__loaded_days.append(self)
         self.__config: Dict[str, object] = {}
-        config_file = os.path.join(os.path.dirname(self.get__file__()), "config.json")
-        if os.path.exists(config_file):
-            with open(config_file, "rb") as fin:
-                self.__config = json.load(fin)
+        config_content = self.get_file_content_raw("config.json")
+        if config_content is not None:
+            self.__config = json.loads(config_content)
 
     def get_input(self, task: StarTask):
-        return self.__day_input[task]
+        return self.__day_input.get(task, None)
 
     def get_day_config(self) -> Dict[str, Any]:
         return self.__config
@@ -59,9 +85,6 @@ class Day(ABC):
             duration = end_time - start_time
             results[task] = result
             durations[task] = duration
-            if result is None:
-                res.append("<<Not done>>")
-                continue
             if show_log:
                 log = log.split("\n")
             else:
@@ -100,15 +123,35 @@ class Day(ABC):
         for day in sorted(cls.__loaded_days, key=lambda x: x.get_name()):
             yield day
 
-    def get_input_content_raw(self, task: StarTask) -> Optional[bytes]:
-        file_name = os.path.join(os.path.dirname(self.get__file__()), f"input_{task.value}.txt")
+    def get_file_content_raw(self, file_name: str) -> Optional[bytes]:
+        file_name = os.path.join(os.path.dirname(self.get__file__()), file_name)
         if not os.path.exists(file_name):
             return None
         with open(file_name, "rb") as fin:
             return fin.read()
 
+    def get_input_content_raw(self, task: StarTask) -> Optional[bytes]:
+        data = self.get_file_content_raw(f"input_{task.value}.txt")
+        if task == StarTask.Task01 and data is None:
+            day = self.get_day()
+            if day is not None:
+                downloaded_data = _download_input(day)
+                if downloaded_data is not None:
+                    downloaded_data = downloaded_data.encode("utf-8")
+                    with open(os.path.join(os.path.dirname(self.get__file__()), f"input_{task.value}.txt"), "wb") \
+                            as fout:
+                        fout.write(downloaded_data)
+                    return downloaded_data
+        return data
+
     def get_name(self) -> str:
         return self.__class__.__name__
+
+    def get_day(self) -> Optional[int]:
+        try:
+            return int(self.get_name()[3:])
+        except (ValueError, KeyError):
+            return None
 
 
 def __import_days():
