@@ -1,6 +1,6 @@
 import os
 import json
-import unittest
+from AoC2020.Day01 import Day01
 
 TEST_INPUT = [1721, 979, 366, 299, 675, 1456]
 RESULT_1 = 514579
@@ -12,3 +12,12 @@ with open(os.path.join(os.path.dirname(__file__), "input_1.txt"), "wb") as f_out
 
 with open(os.path.join(os.path.dirname(__file__), "config.json"), "w") as f_out:
     json.dump({"target": 2020}, f_out)
+
+
+class TestDay01(Day01):
+
+    def __init__(self):
+        super().__init__()
+
+    def get__file__(self) -> str:
+        return __file__
