@@ -38,8 +38,11 @@ if __name__ == "__main__":
             if fastest[0] is None or comb_time < fastest[1]:
                 fastest = (day, comb_time)
 
-    if len(implemented_days) > 1:
+    if fastest[0] is None:
         print("")
-        print(f"Execution of {' and '.join(x.get_name() for x in implemented_days)} took {all_time}")
+        print("No Day produced a result. SAAAAAAAAAAAAAAD")
+    elif len(implemented_days) > 1:
+        print("")
+        print(f"Execution of {' and '.join(x.get_name() for x in implemented_days)} took {datetime.timedelta(seconds=all_time)}")
         print(f"Fastest*: {fastest[0].get_name()} at {datetime.timedelta(seconds=fastest[1])}")
         print("*Only Days that produced at least one result are considered in the fastest competition")

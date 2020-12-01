@@ -6,6 +6,7 @@ from Day import Day, StarTask
 class Day02(Day):
 
     def __init__(self):
+        return
         super().__init__()
 
     def convert_input(self, raw_input: bytes, task: StarTask) -> object:
