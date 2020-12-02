@@ -1,5 +1,6 @@
-import os
 import json
+import os
+
 from AoC2020.Day01 import Day01
 
 TEST_INPUT = [1721, 979, 366, 299, 675, 1456]
@@ -14,7 +15,7 @@ with open(os.path.join(os.path.dirname(__file__), "config.json"), "w") as f_out:
     json.dump({"target": 2020}, f_out)
 
 
-class TestDay01(Day01):
+class TestDay(Day01):
 
     def __init__(self):
         super().__init__()
