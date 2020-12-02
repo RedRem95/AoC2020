@@ -1,4 +1,6 @@
-![Unittests](https://github.com/RedRem95/AoC2020/workflows/Unittests/badge.svg)
+![Unittests](https://github.com/RedRem95/AoC2020/workflows/Unittests/badge.svg?branch=master)![Lint AoC](https://github.com/RedRem95/AoC2020/workflows/Lint%20AoC/badge.svg?branch=master)
+
+[![codecov](https://codecov.io/gh/RedRem95/AoC2020/branch/master/graph/badge.svg?token=9IOS8P760S)](https://codecov.io/gh/RedRem95/AoC2020)
 
 # AoC 2020 Implementation
 
