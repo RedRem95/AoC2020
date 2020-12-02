@@ -1,5 +1,5 @@
 from AoC.Day import StarTask
-from test import Day01 as TestDay
+from test import Day02 as TestDay
 
 _testDay = TestDay.TestDay()
 
