@@ -1,4 +1,4 @@
-name: Unittests
+name: Lint AoC
 
 on: [ push ]
 
