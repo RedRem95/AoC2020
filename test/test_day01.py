@@ -9,9 +9,9 @@ if NUMPY_INSTALLED:
 
     def test_task01():
         log, result = _testDay.run(task=StarTask.Task01)
-        assert TestDay.RESULT_1 == result
+        assert result == TestDay.RESULT_1
 
 
     def test_task02():
         log, result = _testDay.run(task=StarTask.Task02)
-        assert TestDay.RESULT_2 == result
+        assert result == TestDay.RESULT_2
