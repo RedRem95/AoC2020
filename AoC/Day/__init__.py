@@ -49,7 +49,7 @@ class Day(ABC):
             data = self.get_input_content_raw(task=task)
             if data is not None:
                 self.__day_input[task] = self.convert_input(raw_input=data, task=task)
-        if self.get_day() is not None:
+        if self.get_day() is not None and isinstance(self.get_day(), int):
             self.__class__.__loaded_days.append(self)
         self.__config: Dict[str, object] = {}
         config_content = self.get_file_content_raw("config.json")

@@ -2,7 +2,8 @@ from typing import Tuple
 
 try:
     import numpy as np
-except ImportError:
+except (ImportError, ModuleNotFoundError):
+    np = None
     print("It seams like numpy is not installed. You absolutely need numpy to run this")
     exit(1)
 
