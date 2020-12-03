@@ -1,14 +1,17 @@
-from AoC.Day import StarTask
-from test import Day02 as TestDay
+from test.numpy_test import NUMPY_INSTALLED
 
-_testDay = TestDay.TestDay()
+if NUMPY_INSTALLED:
+    from AoC.Day import StarTask
+    from test import Day02 as TestDay
 
-
-def test_task01():
-    log, result = _testDay.run(task=StarTask.Task01)
-    assert TestDay.RESULT_1 == result
+    _testDay = TestDay.TestDay()
 
 
-def test_task02():
-    log, result = _testDay.run(task=StarTask.Task02)
-    assert TestDay.RESULT_2 == result
+    def test_task01():
+        log, result = _testDay.run(task=StarTask.Task01)
+        assert TestDay.RESULT_1 == result
+
+
+    def test_task02():
+        log, result = _testDay.run(task=StarTask.Task02)
+        assert TestDay.RESULT_2 == result
