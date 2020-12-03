@@ -9,6 +9,5 @@ except (ImportError, ModuleNotFoundError):
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         import AoC.Day
 
-        _ = AoC.Day.StarTask.Task01.name
-        assert pytest_wrapped_e.type == SystemExit
-        assert pytest_wrapped_e.value.code == 1
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
