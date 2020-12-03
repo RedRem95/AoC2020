@@ -14,26 +14,52 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
+
+    - name: Install pytest and pytest-cov
+      run: |
+        conda install pytest pytest-cov
+        mkdir coverages
+
+    - name: Test with pytest - no dependecies
+      run: |
+        $CONDA/bin/pytest
+    - name: Get test coverage - no dependecies
+      run: |
+        $CONDA/bin/pytest --cov=./ --cov-report=xml
+        mv coverage.xml coverages/coverage-no-dependecies.xml
+
+    - name: Install numpy
+      run: |
+        conda install numpy
+
+    - name: Test with pytest - only numpy
+      run: |
+        $CONDA/bin/pytest
+    - name: Get test coverage - only numpy
+      run: |
+        $CONDA/bin/pytest --cov=./ --cov-report=xml
+        mv coverage.xml coverages/coverage-only-numpy.xml
+
     - name: Install dependencies
       run: |
         $CONDA/bin/conda env update --file environment.yml --name base
-    - name: Test with pytest
+
+    - name: Test with pytest - all dependencies
       run: |
-        conda install pytest
         $CONDA/bin/pytest
-    - name: Get code coverage
+    - name: Get test coverage - all dependencies
       run: |
-        conda install pytest-cov
         $CONDA/bin/pytest --cov=./ --cov-report=xml
+        mv coverage.xml coverages/coverage-all-dependencies.xml
+
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
+        directory: coverages
         flags: unittests
         env_vars: OS,PYTHON
         name: codecov-AoC2020
         fail_ci_if_error: true
         path_to_write_report: ./codecov_report.txt
         verbose: true
-
