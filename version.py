@@ -2,10 +2,10 @@ from typing import Any
 try:
     from packaging.version import parse
 except ImportError:
-    def parse(version: str):
+    def parse(version: str) -> Any:
         return version
 
-__VERSION = "0.1.0-Day01"
+__VERSION = "0.3.0-Day03"
 
 
 def get_version() -> Any:
