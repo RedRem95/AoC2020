@@ -5,6 +5,7 @@ import time
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Optional, Dict, List, Generator, Any, Tuple
+
 from AoC import THIS_YEAR
 
 
@@ -48,7 +49,8 @@ class Day(ABC):
             data = self.get_input_content_raw(task=task)
             if data is not None:
                 self.__day_input[task] = self.convert_input(raw_input=data, task=task)
-        self.__class__.__loaded_days.append(self)
+        if self.get_day() is not None and isinstance(self.get_day(), int):
+            self.__class__.__loaded_days.append(self)
         self.__config: Dict[str, object] = {}
         config_content = self.get_file_content_raw("config.json")
         if config_content is not None:
@@ -120,7 +122,7 @@ class Day(ABC):
 
     @classmethod
     def iterate_days(cls) -> Generator["Day", "Day", None]:
-        for day in sorted(cls.__loaded_days, key=lambda x: x.get_name()):
+        for day in sorted(cls.__loaded_days, key=lambda x: x.get_day()):
             yield day
 
     def get_file_content_raw(self, file_name: str) -> Optional[bytes]:
