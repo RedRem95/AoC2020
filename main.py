@@ -43,6 +43,7 @@ if __name__ == "__main__":
         print("No Day produced a result. SAAAAAAAAAAAAAAD")
     elif len(implemented_days) > 1:
         print("")
-        print(f"Execution of {' and '.join(x.get_name() for x in implemented_days)} took {datetime.timedelta(seconds=all_time)}")
+        print(
+            f"Execution of Days {', '.join(str(x.get_day()) for x in implemented_days)} took {datetime.timedelta(seconds=all_time)}")
         print(f"Fastest*: {fastest[0].get_name()} at {datetime.timedelta(seconds=fastest[1])}")
         print("*Only Days that produced at least one result are considered in the fastest competition")
