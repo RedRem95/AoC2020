@@ -3,7 +3,7 @@ from typing import Dict, Callable
 
 def __byr(text: str):
     try:
-        return 1920 <= int(text) <= 2020
+        return 1920 <= int(text) <= 2002
     except ValueError:
         pass
     return False
