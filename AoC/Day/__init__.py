@@ -51,6 +51,10 @@ class Day(ABC):
                 self.__day_input[task] = self.convert_input(raw_input=data, task=task)
         if self.get_day() is not None and isinstance(self.get_day(), int):
             self.__class__.__loaded_days.append(self)
+        else:
+            print(f"{self.get_name()} did not produce a valid day number. Please check if the day uses the standard"
+                  f" naming structure of \"DayXX\" so the number can be determined automatically or the \"get_day()\""
+                  f"method is overwritten correctly")
         self.__config: Dict[str, object] = {}
         config_content = self.get_file_content_raw("config.json")
         if config_content is not None:
