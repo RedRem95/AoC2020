@@ -1,4 +1,4 @@
-from test.numpy_test import NUMPY_INSTALLED
+from test.test_numpy import NUMPY_INSTALLED
 
 if NUMPY_INSTALLED:
     from AoC.Day import StarTask

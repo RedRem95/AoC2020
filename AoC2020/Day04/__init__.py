@@ -39,7 +39,7 @@ class Day04(Day):
     def _run(self,
              validator_required: Dict[str, Callable[[str], bool]],
              validator_optional: Dict[str, Callable[[str], bool]],
-             task: StarTask = StarTask.Task01):
+             task: StarTask = StarTask.Task01) -> Tuple[str, object]:
         log = []
         result = 0
         data = self.get_input(task=task)
@@ -56,7 +56,7 @@ class Day04(Day):
     @staticmethod
     def _validate_passport(passport: Dict[str, str],
                            validator_required: Dict[str, Callable[[str], bool]],
-                           validator_optional: Dict[str, Callable[[str], bool]]):
+                           validator_optional: Dict[str, Callable[[str], bool]]) -> bool:
         return all(key in passport and validator(passport[key]) for key, validator in validator_required.items())
 
     def get__file__(self) -> str:
