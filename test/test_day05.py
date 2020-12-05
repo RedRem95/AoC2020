@@ -2,7 +2,7 @@ from test.test_numpy import NUMPY_INSTALLED
 
 if NUMPY_INSTALLED:
     from AoC.Day import StarTask
-    from test import Day03 as TestDay
+    from test import Day05 as TestDay
 
     _testDay = TestDay.TestDay()
 
@@ -14,4 +14,4 @@ if NUMPY_INSTALLED:
 
     def test_task02():
         log, result = _testDay.run(task=StarTask.Task02)
-        assert TestDay.RESULT_2 == result
+        assert result in TestDay.RESULT_2

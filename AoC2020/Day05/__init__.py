@@ -1,6 +1,6 @@
 import math
 import random
-from typing import Tuple
+from typing import Tuple, List
 
 from AoC.Day import Day, StarTask
 
@@ -24,53 +24,53 @@ class Day05(Day):
         return "", None
 
     def _run01(self, task: StarTask = StarTask.Task01) -> Tuple[str, object]:
-        log = [f"checking {len(self.get_input(task=task))} boarding passes for maximum id"]
+        log = [f"checking {len(self.get_input(task=task))} boarding passes"]
         seat_ids = [self._process_pass(boarding_pass=x)[-1] for x in self.get_input(task=task)]
         result = max(seat_ids)
-        log.append(f"Minimum id found as {min(seat_ids)}")
-        log.append(f"Maximum id found as {result}")
+        log.append(f"Minimum seat id found: {min(seat_ids)}")
+        log.append(f"Maximum seat id found: {result}")
         return "\n".join(log), result
 
     def _run02(self, task: StarTask = StarTask.Task01) -> Tuple[str, object]:
-        log = [f"checking {len(self.get_input(task=task))} boarding passes for maximum id"]
+        log = [f"checking {len(self.get_input(task=task))} boarding passes"]
         seat_ids = [self._process_pass(boarding_pass=x)[-1] for x in self.get_input(task=task)]
         empty_ids = [x for x in range(min(seat_ids), max(seat_ids), 1) if x not in seat_ids]
-        log.append(f"Found {len(empty_ids)} empty seats")
+        log.append(f"Found {len(empty_ids)} empty seat{'s' if len(empty_ids) != 1 else ''}")
         if len(empty_ids) <= 0:
-            log.append("You cant fly here")
+            log.append("Check first and last row")
             result = None
         else:
             result = random.choice(empty_ids)
             log.append(f"Found seats: [{', '.join(str(x) for x in empty_ids)}]")
-            log.append(f"Selected one by random. Your seat is {result}")
+            log.append(f"Selecting one by random. Your seat is {result}")
         return "\n".join(log), result
 
-    def _process_pass(self, boarding_pass: str) -> Tuple[int, int, int]:
-        _f_b = [x.lower() for x in boarding_pass if x.lower() in ["f", "b"]]
-        _l_r = [x.lower() for x in boarding_pass if x.lower() in ["l", "r"]]
+    @staticmethod
+    def _process_pass(boarding_pass: str) -> Tuple[int, int, int]:
 
-        _row_min = 0
-        _row_max = int(math.pow(2, len(_f_b)) - 1)
+        def _separate(action_list: List[str], down_action: str, up_action: str) -> int:
+            _not_defined_actions = [x for x in action_list if not (x == down_action or x == up_action)]
+            if len(_not_defined_actions) > 0:
+                raise ValueError(
+                    f"Actions {_not_defined_actions} were not defined. Defined actions: {down_action}, {up_action}")
+            _min = int(0)
+            _max = int(math.pow(2, len(action_list)) - 1)
+            for _action in action_list:
+                if _action == down_action:
+                    _max = int(_max - (_max - _min + 1) / 2)
+                if _action == up_action:
+                    _min = int(_min + (_max - _min + 1) / 2)
+            if _min != _max:
+                raise ValueError(f"Values generated from list {action_list} do not align. {_min} != {_max}")
+            return _min
 
-        _col_min = 0
-        _col_max = int(math.pow(2, len(_l_r)) - 1)
+        _action_space_row = ("f", "b")
+        _action_space_col = ("l", "r")
 
-        for _e in _f_b:
-            if _e == "f":
-                _row_max = _row_max - (_row_max - _row_min + 1) / 2
-            if _e == "b":
-                _row_min = _row_min + (_row_max - _row_min + 1) / 2
+        row = _separate([x.lower() for x in boarding_pass if x.lower() in _action_space_row], *_action_space_row)
+        col = _separate([x.lower() for x in boarding_pass if x.lower() in _action_space_col], *_action_space_col)
 
-        for _e in _l_r:
-            if _e == "l":
-                _col_max = _col_max - (_col_max - _col_min + 1) / 2
-            if _e == "r":
-                _col_min = _col_min + (_col_max - _col_min + 1) / 2
-
-        if _row_min != _row_max or _col_min != _col_max:
-            raise ValueError(f"Values not aligning {_row_min} != {_row_max}; {_col_min} != {_col_max}")
-
-        return int(_row_min), int(_col_min), int(_row_min * 8 + _col_min)
+        return row, col, int(row * 8 + col)
 
     def get__file__(self) -> str:
         return __file__
