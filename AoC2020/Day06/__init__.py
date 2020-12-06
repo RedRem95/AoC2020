@@ -26,7 +26,7 @@ class Day06(Day):
             if len(data_line) <= 0:
                 ret.append([])
                 continue
-            ret[-1].append([x for x in data_line])
+            ret[-1].append([x for x in data_line if x != " "])
         return [x for x in ret if len(x) > 0]
 
     def _run01(self, task: StarTask) -> Tuple[str, object]:
