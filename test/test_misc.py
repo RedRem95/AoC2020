@@ -1,4 +1,4 @@
-from test_numpy import NUMPY_INSTALLED
+from test.test_numpy import NUMPY_INSTALLED
 
 if NUMPY_INSTALLED:
     def test_common():
