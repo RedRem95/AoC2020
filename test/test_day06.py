@@ -2,7 +2,7 @@ from test.test_numpy import NUMPY_INSTALLED
 
 if NUMPY_INSTALLED:
     from AoC.Day import StarTask
-    from test import Day04 as TestDay
+    from test import Day06 as TestDay
 
     _testDay = TestDay.TestDay()
 

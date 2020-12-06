@@ -26,6 +26,7 @@ class Day01(Day):
             return self.__run(num_inputs=2)
         if task == StarTask.Task02:
             return self.__run(num_inputs=3)
+        return "", None
 
     def __run(self, num_inputs: int, task: StarTask = StarTask.Task01) -> Tuple[str, object]:
         if num_inputs <= 1:

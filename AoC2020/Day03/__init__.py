@@ -21,7 +21,9 @@ class Day03(Day):
         return ret
 
     def run(self, task: StarTask) -> Tuple[str, object]:
-        return self.__run(task=task)
+        if task in (x for x in StarTask):
+            return self.__run(task=task)
+        return "", None
 
     def __run(self, task: StarTask):
         data = self.get_input(task=StarTask.Task01)

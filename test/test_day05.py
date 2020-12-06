@@ -15,3 +15,9 @@ if NUMPY_INSTALLED:
     def test_task02():
         log, result = _testDay.run(task=StarTask.Task02)
         assert result in TestDay.RESULT_2
+
+
+    def test_none():
+        # noinspection PyTypeChecker
+        log, result = _testDay.run(task=None)
+        assert result is None
