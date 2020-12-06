@@ -18,5 +18,6 @@ if NUMPY_INSTALLED:
 
 
     def test_none():
+        # noinspection PyTypeChecker
         log, result = _testDay.run(task=None)
         assert result is None
