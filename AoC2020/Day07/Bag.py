@@ -41,11 +41,6 @@ class BagRule:
         return False
 
     def amount_bags_this_creates(self, bag_rules: Dict[str, "BagRule"]) -> int:
-        ret = 1
-        for bag_rule, amount in ((bag_rules.get(x, None), y) for x, y in self._can_contain.items()):
-            if bag_rule is None:
-                continue
-            sub_amount = bag_rule.amount_bags_this_creates(bag_rules=bag_rules)
-            ret += amount * sub_amount
-        return ret
-        # return sum(a * b.amount_sub_bags() for b, a in _ if b is not None)
+        return sum(a * b.amount_bags_this_creates(bag_rules=bag_rules)
+                   for b, a in ((bag_rules.get(x, None), y) for x, y in self._can_contain.items())
+                   if b is not None) + 1
