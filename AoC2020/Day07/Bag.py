@@ -35,6 +35,7 @@ class BagRule:
             sub_rule = bag_rules.get(bag_rule, None)
             if sub_rule is None:
                 continue
+            # noinspection PyTypeChecker
             if sub_rule.can_contain(color=color, already_traveled=already_traveled, log=log, bag_rules=bag_rules,
                                     search_depth=None if search_depth is None else search_depth - 1):
                 return True
