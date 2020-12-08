@@ -1,7 +1,15 @@
-[![Unittests](https://github.com/RedRem95/AoC2020/workflows/Unittests/badge.svg?branch=master)](https://github.com/RedRem95/AoC2020/actions?query=workflow%3AUnittests)
-[![Lint AoC](https://github.com/RedRem95/AoC2020/workflows/Lint%20AoC/badge.svg?branch=master)](https://github.com/RedRem95/AoC2020/actions?query=workflow%3A%22Lint+AoC%22)
+[![GitHub](https://img.shields.io/github/license/RedRem95/AoC2020?style=for-the-badge)](LICENSE)
 
-[![codecov](https://codecov.io/gh/RedRem95/AoC2020/branch/master/graph/badge.svg?token=9IOS8P760S)](https://codecov.io/gh/RedRem95/AoC2020)
+[![Unittests](https://img.shields.io/github/workflow/status/RedRem95/AoC2020/Unittests/master?style=for-the-badge&logo=github&label=Unittests)](https://github.com/RedRem95/AoC2020/actions?query=workflow%3AUnittests)
+[![Lint AoC](https://img.shields.io/github/workflow/status/RedRem95/AoC2020/Lint%20AoC/master?style=for-the-badge&logo=github&label=Lint%20AoC)](https://github.com/RedRem95/AoC2020/actions?query=workflow%3A%22Lint+AoC%22)
+
+[![GitHub version](https://img.shields.io/github/v/release/redrem95/AoC2020?label=Version&sort=semver&style=for-the-badge&logo=github)](https://github.com/RedRem95/AoC2020)
+
+[![Codecov](https://img.shields.io/codecov/c/github/RedRem95/AoC2020?style=for-the-badge&logo=codecov)](https://codecov.io/gh/RedRem95/AoC2020)
+
+![GitHub downloads](https://img.shields.io/github/downloads/RedRem95/AoC2020/total?label=Downloads&style=for-the-badge&logo=github)
+![Repo size](https://img.shields.io/github/repo-size/RedRem95/AoC2020?label=Repo%20Size&style=for-the-badge&logo=github)
+![Code size](https://img.shields.io/github/languages/code-size/RedRem95/AoC2020?label=Code%20Size&style=for-the-badge&logo=github)
 
 # AoC 2020 Implementation
 
