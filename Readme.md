@@ -7,6 +7,10 @@
 
 [![Codecov](https://img.shields.io/codecov/c/github/RedRem95/AoC2020?style=for-the-badge&logo=codecov)](https://codecov.io/gh/RedRem95/AoC2020)
 
+![GitHub downloads](https://img.shields.io/github/downloads/RedRem95/AoC2020/total?label=Downloads&style=for-the-badge&logo=github)
+![Repo size](https://img.shields.io/github/repo-size/RedRem95/AoC2020?label=Repo%20Size&style=for-the-badge&logo=github)
+![Code size](https://img.shields.io/github/languages/code-size/RedRem95/AoC2020?label=Code%20Size&style=for-the-badge&logo=github)
+
 # AoC 2020 Implementation
 
 This is my implementation of the [2020 Advent of Code](https://adventofcode.com/2020) event.
