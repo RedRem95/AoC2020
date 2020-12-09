@@ -26,7 +26,7 @@ class Day09(Day):
         return "", None
 
     def _run01(self, task):
-        preamble_length = self.get_day_config().get("preamble_length", 25)
+        preamble_length = self.get_day_config()["preamble_length"]
         weakness_i, weakness = self._find_weakness(data=self.get_input(task=task), preamble_length=preamble_length)
         log = ""
         if weakness_i > 0 and weakness is not None:
@@ -36,7 +36,7 @@ class Day09(Day):
 
     def _run02(self, task):
         data = self.get_input(task=task)
-        preamble_length = self.get_day_config().get("preamble_length", 25)
+        preamble_length = self.get_day_config()["preamble_length"]
         weakness_i, weakness = self._find_weakness(data=data, preamble_length=preamble_length)
         log = [f"Weakness is {weakness} in line {weakness_i + 1}"]
         for j in range(weakness_i + 1):
@@ -52,8 +52,8 @@ class Day09(Day):
     @staticmethod
     def _find_weakness(data: List[int], preamble_length: int) -> Tuple[int, Optional[int]]:
         for i in range(preamble_length, len(data)):
-            if not any(x + y == data[i] for x, y in itertools.product(data[i - preamble_length:i],
-                                                                      data[i - preamble_length:i])):
+            if not any(x + y == data[i] and x != y for x, y in itertools.product(data[i - preamble_length:i],
+                                                                                 data[i - preamble_length:i])):
                 return i, data[i]
         return -1, None
 
