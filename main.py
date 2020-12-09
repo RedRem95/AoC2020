@@ -5,8 +5,7 @@ if __name__ == "__main__":
     from AoC import Day
     import argparse
     import datetime
-    from typing import Tuple, Optional
-    from math import inf
+    from typing import Tuple, List
 
     parser = argparse.ArgumentParser(prog="AoC2020",
                                      description=f"Implementation for AoC2020 made by me :). Version {version()}")
@@ -26,24 +25,22 @@ if __name__ == "__main__":
     if args.only_last:
         implemented_days = implemented_days[-1:]
 
-    all_time = 0
-    fastest: Tuple[Optional[Day.Day], float] = (None, inf)
+    day_times: List[Tuple[Day.Day, float, bool]] = []
 
     for day in implemented_days:
         log, results, duration = day.run_all(show_log=not args.no_log)
         print(log)
-        if not all(x is None for x in results.values()):
-            comb_time = sum(duration.values())
-            all_time += comb_time
-            if fastest[0] is None or comb_time < fastest[1]:
-                fastest = (day, comb_time)
+        day_times.append((day, sum(duration.values()), any(x is not None for x in results.values())))
 
-    if fastest[0] is None:
+    if not any(x[2] for x in day_times):
         print("")
         print("No Day produced a result. SAAAAAAAAAAAAAAD")
     elif len(implemented_days) > 1:
         print("")
         print(
-            f"Execution of Days {', '.join(str(x.get_day()) for x in implemented_days)} took {datetime.timedelta(seconds=all_time)}")
-        print(f"Fastest*: {fastest[0].get_name()} at {datetime.timedelta(seconds=fastest[1])}")
-        print("*Only Days that produced at least one result are considered in the fastest competition")
+            f"Execution of Days {', '.join(str(x.get_day()) for x in implemented_days)} "
+            f"took {datetime.timedelta(seconds=sum(x[1] for x in day_times))}")
+        fast_slow = sorted((x for x in day_times if x[2]), key=lambda y: y[1])
+        print(f"Fastest*: {fast_slow[0][0].get_name()} at {datetime.timedelta(seconds=fast_slow[0][1])}")
+        print(f"Slowest*: {fast_slow[-1][0].get_name()} at {datetime.timedelta(seconds=fast_slow[-1][1])}")
+        print("*Only Days that produced at least one result are considered in the fastest and slowest competition")
