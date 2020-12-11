@@ -250,4 +250,4 @@ dmypy.json
 
 #anventofcode
 input_*.txt
-/*/Day*/config.json
+/test/Day*/config.json
