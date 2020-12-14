@@ -7,7 +7,7 @@ from AoC.Day import Day, StarTask
 class Day14(Day):
 
     def convert_input(self, raw_input: bytes, task: StarTask) -> object:
-        raw_data = [x for x in str(raw_input, "utf-8").split("\n") if len(x) > 0]
+        raw_data = [x.strip() for x in str(raw_input, "utf-8").split("\n") if len(x.strip()) > 0]
         ret = []
         for line in raw_data:
             ret.append(line)
