@@ -3,7 +3,7 @@ import json
 import os
 import time
 from abc import ABC, abstractmethod
-from enum import Enum
+from enum import IntEnum
 from typing import Optional, Dict, List, Generator, Any, Tuple
 
 from AoC import THIS_YEAR
@@ -15,6 +15,7 @@ def _download_input(day: int, year: int = datetime.datetime.now().year) -> Optio
 
 __aoc_session_env = "AOC_SESSION_ID"
 try:
+    # noinspection PyUnresolvedReferences
     import requests
     SESSION_ID = os.environ.get(__aoc_session_env)
     if SESSION_ID is None:
@@ -35,7 +36,7 @@ except KeyError as e:
     print(f"Requests installed. But you need to set the \"{__aoc_session_env}\" environment variable")
 
 
-class StarTask(Enum):
+class StarTask(IntEnum):
     Task01 = 1
     Task02 = 2
 
@@ -61,7 +62,10 @@ class Day(ABC):
             self.__config = json.loads(config_content)
 
     def get_input(self, task: StarTask):
-        return self.__day_input.get(task, None)
+        for task in sorted((x for x in StarTask if x.value <= task.value), key=lambda x: -x.value):
+            if task in self.__day_input:
+                return self.__day_input[task]
+        return None
 
     def get_day_config(self) -> Dict[str, Any]:
         return self.__config
