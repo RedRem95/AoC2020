@@ -27,11 +27,11 @@ class Day04(Day):
 
     def run(self, task: StarTask) -> Tuple[str, object]:
         if task == StarTask.Task01:
-            return self._run(task=StarTask.Task01,
+            return self._run(task=task,
                              validator_required=dict((x, lambda y: True) for x in VALIDATORS_REQUIRED.keys()),
                              validator_optional=dict((x, lambda y: True) for x in VALIDATORS_OPTIONAL.keys()))
         if task == StarTask.Task02:
-            return self._run(task=StarTask.Task01,
+            return self._run(task=task,
                              validator_required=VALIDATORS_REQUIRED,
                              validator_optional=VALIDATORS_OPTIONAL)
         return "", None

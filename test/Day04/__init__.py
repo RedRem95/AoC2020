@@ -1,8 +1,6 @@
 import os
-from typing import Tuple
 
-from AoC.Day import StarTask
-from AoC2020.Day04 import Day04, VALIDATORS_REQUIRED, VALIDATORS_OPTIONAL
+from AoC2020.Day04 import Day04
 
 TEST_INPUT_1 = [
     "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd",
@@ -60,20 +58,6 @@ with open(os.path.join(os.path.dirname(__file__), "input_2.txt"), "wb") as f_out
 
 
 class TestDay(Day04):
-
-    def __init__(self):
-        super().__init__()
-
-    def run(self, task: StarTask) -> Tuple[str, object]:
-        if task == StarTask.Task01:
-            return self._run(task=task,
-                             validator_required=dict((x, lambda y: True) for x in VALIDATORS_REQUIRED.keys()),
-                             validator_optional=dict((x, lambda y: True) for x in VALIDATORS_OPTIONAL.keys()))
-        if task == StarTask.Task02:
-            return self._run(task=task,
-                             validator_required=VALIDATORS_REQUIRED,
-                             validator_optional=VALIDATORS_OPTIONAL)
-        return "", None
 
     def get__file__(self) -> str:
         return __file__
