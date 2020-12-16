@@ -17,10 +17,12 @@ __aoc_session_env = "AOC_SESSION_ID"
 try:
     # noinspection PyUnresolvedReferences
     import requests
+
     SESSION_ID = os.environ.get(__aoc_session_env)
     if SESSION_ID is None:
         del SESSION_ID
         raise KeyError()
+
 
     def _download_input(day: int, year: int = None) -> Optional[str]:
         if year is None:
@@ -78,9 +80,17 @@ class Day(ABC):
     def run(self, task: StarTask) -> Tuple[str, object]:
         pass
 
-    @abstractmethod
     def get__file__(self) -> str:
-        return __file__
+        import inspect
+        try:
+            ret = inspect.getfile(self.__class__)
+            if (ret is None) or (len(ret) <= 0) or (not os.path.exists(ret)):
+                raise ValueError()
+            return ret
+        except (TypeError, ValueError):
+            raise NotImplementedError(f"Could not get file {self.__class__.__name__} is defined in"
+                                      "Please make sure inspect can find the file or "
+                                      f"override Day.get__file__() in {self.__class__.__name__}")
 
     def run_all(self, show_log: bool = True) -> Tuple[str, Dict[StarTask, object], Dict[StarTask, float]]:
         res = []

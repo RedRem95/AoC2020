@@ -42,6 +42,3 @@ class Day15(Day):
         log.append(f"{sorted_thing[-1][0]} has been spoken the highest amount at {sorted_thing[-1][1]} times")
         log.append(f"{sorted_thing[0][0]} has been spoken the least amount at {sorted_thing[0][1]} times")
         return "\n".join(str(x) for x in log), last
-
-    def get__file__(self) -> str:
-        return __file__
