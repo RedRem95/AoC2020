@@ -18,13 +18,13 @@ class Day16(Day):
         return "", None
 
     @staticmethod
-    def _run01(data: Tuple[list["Class"], List[int], List[List[int]]]) -> Tuple[str, object]:
+    def _run01(data: Tuple[List["Class"], List[int], List[List[int]]]) -> Tuple[str, object]:
         other_tickets = np.array(data[2], dtype=int).flatten()
         log = f"There are {len(data[0])} classes to be checked\n" \
               f"There are {len(data[2])} other tickets you are scanning"
         return log, sum(0 if any(x.number_valid(y) for x in data[0]) else y for y in other_tickets)
 
-    def _run02(self, data: Tuple[list["Class"], List[int], List[List[int]]]) -> Tuple[str, object]:
+    def _run02(self, data: Tuple[List["Class"], List[int], List[List[int]]]) -> Tuple[str, object]:
         log = [f"There are {len(data[0])} classes to be checked",
                f"There are {len(data[2])} other tickets you are scanning"]
         other_tickets = []
