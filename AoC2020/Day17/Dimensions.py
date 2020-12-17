@@ -21,24 +21,24 @@ class State(Enum):
         return str(self.value[0] if hasattr(self.value, "__iter__") else self.value)
 
 
-class DimensionalRule(ABC):
+class StateRule(ABC):
     @abstractmethod
     def apply(self, me: State, adjacent: List[State]) -> Optional[State]:
         pass
 
 
-class PocketDimension:
+class GameOfStates:
 
     def __init__(self,
                  initial_plane: List[List[Union[str, State]]],
-                 rules: List[DimensionalRule],
+                 rules: List[StateRule],
                  dimensions: int = 3,
-                 only_interesting: Optional[List[State]] = None):
+                 interesting_states: Optional[List[State]] = None):
         self._data: Dict[Tuple[int, ...], Optional[State]] = {}
         zero_dimensions = [0] * (dimensions - 2)
         self._rules = [x for x in rules]
         self._dimensions = dimensions
-        self._only_interesting = only_interesting
+        self._interesting_states = interesting_states
         for y, line in enumerate(initial_plane):
             for x, element in enumerate(line):
                 state = State.by_value(str(element))
@@ -46,9 +46,9 @@ class PocketDimension:
                     self._data[tuple([x, y] + zero_dimensions)] = State.by_value(str(element))
 
     def _is_state_interesting(self, state: State):
-        if self._only_interesting is None:
+        if self._interesting_states is None:
             return True
-        return state in self._only_interesting
+        return state in self._interesting_states
 
     def _get_adjacent(self, *coordinates: int) -> List[Tuple[int, ...]]:
         ret: List[Tuple[int, ...]] = []
@@ -68,11 +68,12 @@ class PocketDimension:
         work_coordinates.add(tuple([0] * self._dimensions))
         for c in self._data.keys():
             if len(c) != self._dimensions:
-                raise ArithmeticError()
+                raise IndexError(f"coordinate-dimension does not math set dimension: {c}->{len(c)}!={self._dimensions}")
             work_coordinates.add(c)
             for a in self._get_adjacent(*c):
                 if len(a) != self._dimensions:
-                    raise ArithmeticError()
+                    raise IndexError(f"coordinate-dimension does not math set dimension: {a}->{len(a)}!="
+                                     f"{self._dimensions}")
                 work_coordinates.add(a)
 
         for coordinate in work_coordinates:
@@ -136,7 +137,7 @@ class PocketDimension:
         return self._dimensions
 
 
-class ItsAlive(DimensionalRule):
+class ItsAlive(StateRule):
     def apply(self, me: State, adjacent: List[State]) -> Optional[State]:
         if me == State.ACTIVE:
             if sum(1 if a == State.ACTIVE else 0 for a in adjacent) in (2, 3):
@@ -146,7 +147,7 @@ class ItsAlive(DimensionalRule):
         return None
 
 
-class ItsDead(DimensionalRule):
+class ItsDead(StateRule):
     def apply(self, me: State, adjacent: List[State]) -> Optional[State]:
         if me == State.INACTIVE:
             if sum(1 if a == State.ACTIVE else 0 for a in adjacent) == 3:

@@ -1,7 +1,7 @@
 from typing import Tuple, List
 
 from AoC.Day import Day, StarTask
-from AoC2020.Day17.Dimensions import PocketDimension, ItsAlive, ItsDead, State
+from AoC2020.Day17.Dimensions import GameOfStates, ItsAlive, ItsDead, State
 
 
 class Day17(Day):
@@ -14,10 +14,10 @@ class Day17(Day):
         return "", None
 
     def _run(self, data: List[List[str]], steps: int = 6, dimensions: int = 3) -> Tuple[str, object]:
-        dimension = PocketDimension(initial_plane=data,
-                                    rules=[ItsAlive(), ItsDead()],
-                                    dimensions=dimensions,
-                                    only_interesting=[State.ACTIVE])
+        dimension = GameOfStates(initial_plane=data,
+                                 rules=[ItsAlive(), ItsDead()],
+                                 dimensions=dimensions,
+                                 interesting_states=[State.ACTIVE])
         log = []
         for i in range(steps):
             dimension.next()
