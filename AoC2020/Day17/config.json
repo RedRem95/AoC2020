@@ -1,0 +1,10 @@
+{
+  "Task01": {
+    "steps": 6,
+    "dimensions": 3
+  },
+  "Task02": {
+    "steps": 6,
+    "dimensions": 4
+  }
+}
