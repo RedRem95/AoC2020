@@ -14,14 +14,15 @@ class Day17(Day):
         return "", None
 
     def _run(self, data: List[List[str]], steps: int = 6, dimensions: int = 3) -> Tuple[str, object]:
+        log = []
         dimension = GameOfStates(initial_plane=data,
                                  rules=[ItsAlive(), ItsDead()],
                                  dimensions=dimensions,
                                  interesting_states=[State.ACTIVE])
-        log = []
+        r = dimension.count(State.ACTIVE)
+        log.append(f"Setup a {dimension.get_dimensionality()}-d pocket dimension that has {r} initial active cores")
         for i in range(steps):
             dimension.next()
-        log.append(f"State after {steps} simulated steps")
         r = dimension.count(State.ACTIVE)
         log.append(f"After {steps} steps this {dimension.get_dimensionality()}-d pocket dimension has {r} active cores")
         return "\n".join(str(x) for x in log), dimension.count(State.ACTIVE)
