@@ -5,7 +5,7 @@ except ImportError:
     def parse(version: str) -> Any:
         return version
 
-__VERSION = "0.19.0-Day19"
+__VERSION = "0.20.0-Day20"
 
 
 def get_version() -> Any:
