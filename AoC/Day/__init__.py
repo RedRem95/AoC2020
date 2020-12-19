@@ -105,7 +105,7 @@ class Day(ABC):
             duration = end_time - start_time
             results[task] = result
             durations[task] = duration
-            if show_log:
+            if show_log and len(log) > 0:
                 log = log.split("\n")
             else:
                 log = []
@@ -113,7 +113,7 @@ class Day(ABC):
             time_str: str = f"   Time: '{datetime.timedelta(seconds=duration)}'"
             max_len = max([len(x) for x in log] + [1, len(result), len(time_str)])
             template = "|{line:%s}|" % max_len
-            if show_log:
+            if show_log and len(log) > 0:
                 res.append(f"|log:{'=' * (max_len - 4)}|")
                 for line in log:
                     res.append(template.format(line=line))
