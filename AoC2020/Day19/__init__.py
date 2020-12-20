@@ -20,7 +20,8 @@ class Day19(Day):
             return self._run(data=self.get_input(task=task), replacements=self.get_day_config().get(task.name, None))
         return "", None
 
-    def _run(self, data: Tuple[List[str], List[str]], replacements: List[str] = None) -> Tuple[str, object]:
+    @staticmethod
+    def _run(data: Tuple[List[str], List[str]], replacements: List[str] = None) -> Tuple[str, object]:
         if replacements is None:
             replacements = []
 
