@@ -24,6 +24,7 @@ class Day20(Day):
                 current_tile.append(line)
         if len(current_tile) > 0:
             tiles.append(Tile.parse(data=current_tile))
+            str(tiles[-1])
 
         return tiles
 
