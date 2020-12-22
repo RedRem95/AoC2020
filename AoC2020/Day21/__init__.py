@@ -26,7 +26,8 @@ class Day21(Day):
             return self._run02(data=self.get_input(task=task))
         return "", None
 
-    def _run01(self, data: Tuple[List[Set[str]], Dict[str, List[Set[str]]]]) -> Tuple[str, object]:
+    @staticmethod
+    def _run01(data: Tuple[List[Set[str]], Dict[str, List[Set[str]]]]) -> Tuple[str, object]:
         ingredients: Set[str] = set()
         ingredients_in_dishes: List[Set[str]] = data[0]
         allergens: Dict[str, List[Set[str]]] = data[1]
@@ -56,7 +57,8 @@ class Day21(Day):
 
         return "\n".join(str(x) for x in log), r
 
-    def _run02(self, data: Tuple[List[Set[str]], Dict[str, List[Set[str]]]]) -> Tuple[str, object]:
+    @staticmethod
+    def _run02(data: Tuple[List[Set[str]], Dict[str, List[Set[str]]]]) -> Tuple[str, object]:
 
         condensed_allergens: Dict[str, Set[str]] = dict((x, set()) for x in data[1].keys())
         for allergen, dishes in data[1].items():
