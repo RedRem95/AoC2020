@@ -16,7 +16,7 @@ class Day23(Day):
         return cups
 
     def run(self, task: StarTask) -> Tuple[str, object]:
-        if task == StarTask.Task02:
+        if task == StarTask.Task02 or task is None:
             return "", None
         log, cups = self._run_v2(data=self.get_input(task=task), **self.get_day_config()[task.name])
         index_1 = cups.index(1)
