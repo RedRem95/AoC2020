@@ -24,7 +24,7 @@ if NUMPY_INSTALLED:
 
 
     def test_dimension_str():
-        from AoC2020.Day17.Dimensions import GameOfStates, ItsAlive, ItsDead
+        from AoC2020.Day17.GameOfStates import GameOfStates, ItsAlive, ItsDead
         init_state = [["#", "."], [".", "#"]]
         gos = GameOfStates(initial_plane=init_state, dimensions=2,
                            rules=[ItsAlive(), ItsDead()], interesting_states=None)
