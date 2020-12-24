@@ -1,7 +1,7 @@
 from typing import Tuple, List
 
 from AoC.Day import Day, StarTask
-from AoC2020.Day17.GameOfStates import GameOfStates, ItsAlive, ItsDead, DefaultState
+from AoC2020.Day17.GameOfStates import GameOfStates, ItsAlive, ItsDead, DefaultState, ACTIVE, INACTIVE
 
 
 class Day17(Day):
@@ -13,16 +13,17 @@ class Day17(Day):
             return self._run(data=self.get_input(task=task), **self.get_day_config()[task.name])
         return "", None
 
-    def _run(self, data: List[List[str]], steps: int = 6, dimensions: int = 3) -> Tuple[str, object]:
+    @staticmethod
+    def _run(data: List[List[str]], steps: int = 6, dimensions: int = 3) -> Tuple[str, object]:
         log = []
         dimension = GameOfStates(initial_plane=data,
                                  rules=[ItsAlive(), ItsDead()],
                                  dimensions=dimensions,
-                                 interesting_states=[DefaultState.ACTIVE])
-        r = dimension.count(DefaultState.ACTIVE)
+                                 interesting_states=[ACTIVE])
+        r = dimension.count(ACTIVE)
         log.append(f"Setup a {dimension.get_dimensionality()}-d pocket dimension that has {r} initial active cores")
         for i in range(steps):
             dimension.next()
-        r = dimension.count(DefaultState.ACTIVE)
+        r = dimension.count(ACTIVE)
         log.append(f"After {steps} steps this {dimension.get_dimensionality()}-d pocket dimension has {r} active cores")
-        return "\n".join(str(x) for x in log), dimension.count(DefaultState.ACTIVE)
+        return "\n".join(str(x) for x in log), dimension.count(ACTIVE)
