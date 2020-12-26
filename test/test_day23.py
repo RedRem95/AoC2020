@@ -12,6 +12,12 @@ if NUMPY_INSTALLED:
         assert str(result) == str(TestDay.RESULT_1)
 
 
+    def test_task02():
+        log, result = _testDay.run(task=StarTask.Task02)
+        assert int(result) == int(TestDay.RESULT_2)
+        assert str(result) == str(TestDay.RESULT_2)
+
+
     def test_none():
         # noinspection PyTypeChecker
         log, result = _testDay.run(task=None)

@@ -22,7 +22,7 @@ CONFIG = {
 }
 
 RESULT_1 = 67384529
-RESULT_2 = None
+RESULT_2 = 149245887792
 
 with open(os.path.join(os.path.dirname(__file__), "input_1.txt"), "wb") as f_out:
     f_out.write(bytes("\n".join(str(x) for x in INPUT_1), "utf-8"))

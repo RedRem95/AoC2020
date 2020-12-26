@@ -1,3 +1,4 @@
+import collections
 from copy import deepcopy
 from typing import Tuple, List, Dict, Any, Optional
 
@@ -16,7 +17,7 @@ class Day23(Day):
         return cups
 
     def run(self, task: StarTask) -> Tuple[str, object]:
-        if task == StarTask.Task02 or task is None:
+        if task is None:
             return "", None
         log, cups = self._run_v2(data=self.get_input(task=task), **self.get_day_config()[task.name])
         index_1 = cups.index(1)
@@ -60,7 +61,7 @@ class Day23(Day):
     def _run_v2(data: List[int], rounds: int, target_amount: int) -> Tuple[List[str], List[int]]:
         log = []
         cups = data + [i + 1 for i in range(max(data), target_amount, 1)]
-        cups = numpy_variant(cups=cups, rounds=rounds)
+        cups = queue_variant(cups=cups, rounds=rounds)
         return log, list(cups)
 
 
@@ -123,3 +124,39 @@ def numpy_variant(cups: List[int], rounds: int, pick_up_count: int = 3) -> np.nd
             print(f"{i / rounds * 100:6.2f} [{i}/{rounds}]")
         i += 1
     return matrix[now]
+
+
+def queue_variant(cups: List[int], rounds: int, pick_up_count: int = 3) -> List[int]:
+    min_cup, max_cup = min(cups), max(cups)
+    picked_up: Dict[int, List[int]] = {}
+    cups_queue = collections.deque(iterable=cups, maxlen=len(cups))
+
+    def get_next() -> int:
+        n = cups_queue.popleft()
+        if n in picked_up:
+            for v in reversed(picked_up[n]):
+                cups_queue.appendleft(v)
+            del picked_up[n]
+        return n
+
+    i = 0
+    while i < rounds:
+
+        current = get_next()
+        pick_up = [get_next() for _ in range(pick_up_count)]
+
+        destination = current - 1
+        while destination < min_cup or destination in pick_up:
+            destination -= 1
+            if destination < min_cup:
+                destination = max_cup
+
+        picked_up[destination] = pick_up
+        cups_queue.append(current)
+
+        i += 1
+
+    ret = []
+    while len(cups_queue) > 0:
+        ret.append(get_next())
+    return ret

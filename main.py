@@ -7,14 +7,20 @@ if __name__ == "__main__":
     import datetime
     from typing import Tuple, List
 
+    this_year = datetime.datetime.now().year
+
     parser = argparse.ArgumentParser(prog="AoC2020",
                                      description=f"Implementation for AoC2020 made by me :). Version {version()}")
     parser.add_argument("--only-last", action="store_true", required=False, dest="only_last",
-                        help="Only run latest Day that has been implemented")
+                        help="Only run latest Day that has been implemented. Overrides -y and -d")
     parser.add_argument("--no-log", action="store_true", required=False, dest="no_log",
                         help="Dont show log messages for Day")
     parser.add_argument("-v", "--version", action="store_true", required=False, dest="show_version",
                         help="Show version")
+    parser.add_argument("-y", "--year", dest="aoc_year", required=False, type=int, default=this_year,
+                        help=f"Year of AoC you want to run [Default: {this_year}]")
+    parser.add_argument("-d", "--day", dest="aoc_day", required=False, type=int, default=None,
+                        help="Day of AoC you want to run. Runs all days of year if none is given")
     args = parser.parse_args()
 
     if args.show_version:
@@ -24,6 +30,8 @@ if __name__ == "__main__":
     implemented_days = list(Day.Day.iterate_days())
     if args.only_last:
         implemented_days = implemented_days[-1:]
+    elif args.aoc_day is not None:
+        implemented_days = [x for x in implemented_days if x.get_day() == args.aoc_day]
 
     day_times: List[Tuple[Day.Day, float, bool]] = []
 
