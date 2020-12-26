@@ -135,7 +135,7 @@ class SquareImageArray:
         return np.array(ret)
 
     def to_id_matrix(self) -> np.ndarray:
-        return np.array([[x[0] for x in y] for y in self._fitted], dtype=int)
+        return np.array([[x[0] for x in y] for y in self._fitted], dtype=np.int64)
 
     def __str__(self):
         _matrix = self.to_id_matrix()
