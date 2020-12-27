@@ -44,7 +44,7 @@ class Day20(Day):
         sia = self._get_sia(tiles=tiles)
 
         sia_matrix = sia.to_id_matrix()
-        r = sia_matrix[0, 0] * sia_matrix[0, -1] * sia_matrix[-1, 0] * sia_matrix[-1, -1]
+        r = int(sia_matrix[0, 0]) * int(sia_matrix[0, -1]) * int(sia_matrix[-1, 0]) * int(sia_matrix[-1, -1])
 
         log = [f"Created Square Image Array from {len(tiles)} tiles",
                f"Square image has {sia.get_edge_len()}x{sia.get_edge_len()}",

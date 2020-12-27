@@ -1,10 +1,14 @@
-from typing import Tuple, List, Type
+from typing import Tuple, List, Type, Dict
 
 from AoC.Day import Day, StarTask
 from AoC2020.Day22.Gaming import Combat, RecursiveCombat
 
 
 class Day22(Day):
+    _task_games: Dict[StarTask, Type[Combat]] = {
+        StarTask.Task01: Combat,
+        StarTask.Task02: RecursiveCombat
+    }
 
     def convert_input(self, raw_input: bytes, task: StarTask) -> object:
         p2_cards = []
@@ -26,10 +30,8 @@ class Day22(Day):
         return p1_cards, p2_cards
 
     def run(self, task: StarTask) -> Tuple[str, object]:
-        if task == StarTask.Task01:
-            return self._run(data=self.get_input(task=task), game_type=Combat)
-        if task == StarTask.Task02:
-            return self._run(data=self.get_input(task=task), game_type=RecursiveCombat)
+        if task in self.__class__._task_games:
+            return self._run(data=self.get_input(task=task), game_type=self.__class__._task_games[task])
         return "", None
 
     @staticmethod

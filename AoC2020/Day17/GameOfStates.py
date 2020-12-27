@@ -1,24 +1,83 @@
 import itertools
 from abc import ABC, abstractmethod
-from enum import Enum
-from typing import Optional, List, Union, Tuple, Dict
+from typing import Optional, List, Union, Tuple, Dict, TypeVar, Type, Generic, Generator
 
 import numpy as np
 
+T = TypeVar("T")
 
-class State(Enum):
-    ACTIVE = "#",
-    INACTIVE = "."
+
+class State(ABC, Generic[T]):
 
     @classmethod
-    def by_value(cls, val: str) -> Optional["State"]:
-        for i in cls:
-            if val == str(i):
+    def by_value(cls, val: T) -> Optional["State"]:
+        for i in cls.iterate_states():
+            if val == i.get_value():
                 return i
         return None
 
+    @classmethod
+    def by_name(cls, name: str) -> Optional["State"]:
+        for i in cls.iterate_states():
+            if name == i.get_name():
+                return i
+        return None
+
+    @classmethod
+    @abstractmethod
+    def get_default_state(cls) -> "State":
+        pass
+
+    @classmethod
+    @abstractmethod
+    def iterate_states(cls) -> Generator["State", "State", None]:
+        pass
+
+    @abstractmethod
+    def get_value(self) -> T:
+        pass
+
+    @abstractmethod
+    def get_name(self) -> str:
+        pass
+
+    @abstractmethod
     def __str__(self):
-        return str(self.value[0] if hasattr(self.value, "__iter__") else self.value)
+        pass
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}<name: {self.get_name()}, value: {self.get_value()}>"
+
+
+class DefaultState(State[str]):
+    _created_states: List["DefaultState"] = []
+
+    def __init__(self, name: str, value: str):
+        self._value = value
+        self._name = name
+        self.__class__._created_states.append(self)
+
+    @classmethod
+    def get_default_state(cls) -> "DefaultState":
+        return INACTIVE
+
+    @classmethod
+    def iterate_states(cls) -> Generator["DefaultState", "DefaultState", None]:
+        for i in cls._created_states:
+            yield i
+
+    def get_name(self) -> str:
+        return self._name
+
+    def get_value(self) -> str:
+        return self._value
+
+    def __str__(self):
+        return self.get_value()
+
+
+ACTIVE = DefaultState(name="ACTIVE", value="#")
+INACTIVE = DefaultState(name="INACTIVE", value=".")
 
 
 class StateRule(ABC):
@@ -33,7 +92,9 @@ class GameOfStates:
                  initial_plane: List[List[Union[str, State]]],
                  rules: List[StateRule],
                  dimensions: int = 3,
-                 interesting_states: Optional[List[State]] = None):
+                 interesting_states: Optional[List[State]] = None,
+                 used_state_type: Type[State] = DefaultState):
+        self._used_state_type = used_state_type
         self._data: Dict[Tuple[int, ...], Optional[State]] = {}
         zero_dimensions = [0] * (dimensions - 2)
         self._rules = [x for x in rules]
@@ -41,9 +102,9 @@ class GameOfStates:
         self._interesting_states = interesting_states
         for y, line in enumerate(initial_plane):
             for x, element in enumerate(line):
-                state = State.by_value(str(element))
+                state = used_state_type.by_value(str(element))
                 if state is not None and self._is_state_interesting(state):
-                    self._data[tuple([x, y] + zero_dimensions)] = State.by_value(str(element))
+                    self._data[tuple([x, y] + zero_dimensions)] = used_state_type.by_value(str(element))
 
     def _is_state_interesting(self, state: State):
         if self._interesting_states is None:
@@ -59,14 +120,20 @@ class GameOfStates:
         return ret
 
     def get_at(self, *coordinates: int) -> State:
-        return self._data.get(coordinates, State.INACTIVE)
+        return self._data.get(coordinates, self._used_state_type.get_default_state())
+
+    def _get_data(self):
+        return self._data
+
+    def _set_data(self, data: Dict[Tuple[int, ...], Optional[State]]):
+        self._data = data
 
     def next(self):
         next_stage: Dict[Tuple[int, ...], Optional[State]] = {}
 
         work_coordinates = set()
         work_coordinates.add(tuple([0] * self._dimensions))
-        for c in self._data.keys():
+        for c in self._get_data().keys():
             if len(c) != self._dimensions:
                 raise IndexError(f"coordinate-dimension does not math set dimension: {c}->{len(c)}!={self._dimensions}")
             work_coordinates.add(c)
@@ -88,8 +155,8 @@ class GameOfStates:
             if self._is_state_interesting(r):
                 next_stage[coordinate] = r
 
-        something_changed = self.compare_stages(s1=self._data, s2=next_stage)
-        self._data = next_stage
+        something_changed = self.compare_stages(s1=self._get_data(), s2=next_stage)
+        self._set_data(next_stage)
         return something_changed
 
     @staticmethod
@@ -100,7 +167,7 @@ class GameOfStates:
         return True
 
     def count(self, target_state: State):
-        return sum(1 if v == target_state else 0 for v in self._data.values())
+        return sum(1 if v == target_state else 0 for v in self._get_data().values())
 
     def __str__(self):
         z_dimensions = self._dimensions - 2
@@ -111,7 +178,7 @@ class GameOfStates:
                 z_template = "z={z}"
         else:
             z_template = None
-        all_coordinates = np.array([x for x in self._data.keys()])
+        all_coordinates = np.array([x for x in self._get_data().keys()])
         min_coordinates = np.min(all_coordinates, axis=0)
         max_coordinates = np.max(all_coordinates, axis=0)
 
@@ -138,20 +205,20 @@ class GameOfStates:
 
 
 class ItsAlive(StateRule):
-    def apply(self, me: State, adjacent: List[State]) -> Optional[State]:
-        if me == State.ACTIVE:
-            if sum(1 if a == State.ACTIVE else 0 for a in adjacent) in (2, 3):
-                return State.ACTIVE
+    def apply(self, me: DefaultState, adjacent: List[DefaultState]) -> Optional[DefaultState]:
+        if me == ACTIVE:
+            if sum(1 if a == ACTIVE else 0 for a in adjacent) in (2, 3):
+                return ACTIVE
             else:
-                return State.INACTIVE
+                return INACTIVE
         return None
 
 
 class ItsDead(StateRule):
-    def apply(self, me: State, adjacent: List[State]) -> Optional[State]:
-        if me == State.INACTIVE:
-            if sum(1 if a == State.ACTIVE else 0 for a in adjacent) == 3:
-                return State.ACTIVE
+    def apply(self, me: DefaultState, adjacent: List[DefaultState]) -> Optional[DefaultState]:
+        if me == INACTIVE:
+            if sum(1 if a == ACTIVE else 0 for a in adjacent) == 3:
+                return ACTIVE
             else:
-                return State.INACTIVE
+                return INACTIVE
         return None
