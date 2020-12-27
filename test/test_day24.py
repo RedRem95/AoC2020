@@ -21,3 +21,11 @@ if NUMPY_INSTALLED:
         # noinspection PyTypeChecker
         log, result = _testDay.run(task=None)
         assert result is None
+
+
+    def test_floor_colors():
+        from AoC2020.Day24.Floor import Colors, COLOR_WHITE, COLOR_BLACK
+        assert Colors.by_name(name=COLOR_WHITE.get_name()) == COLOR_WHITE
+        assert Colors.by_name(name=COLOR_BLACK.get_name()) == COLOR_BLACK
+        assert Colors.by_value(val=COLOR_WHITE.get_value()) == COLOR_WHITE
+        assert Colors.by_value(val=COLOR_BLACK.get_value()) == COLOR_BLACK

@@ -29,3 +29,11 @@ if NUMPY_INSTALLED:
         gos = GameOfStates(initial_plane=init_state, dimensions=2,
                            rules=[ItsAlive(), ItsDead()], interesting_states=None)
         assert str(gos) == "\n".join("".join(x) for x in init_state)
+
+
+    def test_default_state():
+        from AoC2020.Day17.GameOfStates import DefaultState, ACTIVE, INACTIVE
+        assert DefaultState.by_name(name=ACTIVE.get_name()) == ACTIVE
+        assert DefaultState.by_name(name=INACTIVE.get_name()) == INACTIVE
+        assert DefaultState.by_value(val=ACTIVE.get_value()) == ACTIVE
+        assert DefaultState.by_value(val=INACTIVE.get_value()) == INACTIVE
