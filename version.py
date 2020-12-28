@@ -6,7 +6,7 @@ except ImportError:
         return version
 
       
-__VERSION = "0.24.0-Day24"
+__VERSION = "0.25.0-Day25"
 
 
 def get_version() -> Any:
